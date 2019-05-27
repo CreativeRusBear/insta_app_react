@@ -15,4 +15,5 @@ export default class InstaService {
         const res=await this.getResource('posts/');
         return res;
     }
+
 }
