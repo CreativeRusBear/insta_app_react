@@ -167,3 +167,17 @@ header {
     height: 300px;
     object-fit: cover;
 }
+
+.loader{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.load{
+    width: 500px;
+}
+
+.min_load{
+    width: 250px;
+}

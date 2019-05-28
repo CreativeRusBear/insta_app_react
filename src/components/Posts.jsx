@@ -2,12 +2,14 @@ import React, {Component} from 'react';
 import InstaService from '../services/instaservice';
 import User from './User';
 import ErrorMessage from './ErrorMessage';
+import Loader from "./Loader";
 
 export default class Posts extends Component{
     InstaService=new InstaService();
     state={
       posts: [],
-      error: false
+      error: false,
+      loading: true
     }
 
     componentDidMount() {
@@ -23,13 +25,15 @@ export default class Posts extends Component{
     onPostsLoaded=(posts)=>{
         this.setState({
             posts,
-            error: false
+            error: false,
+            loading: false
         })
     }
 
     onError=(err)=>{
         this.setState({
-            error: true
+            error: true,
+            loading: false
         })
     }
 
@@ -53,8 +57,11 @@ export default class Posts extends Component{
     }
 
     render() {
-        const {posts, error}=this.state;
-        if (error) {
+        const {posts, error, loading}=this.state;
+        if (!error && loading){
+            return <Loader/>
+        }
+        else if (error) {
             return <ErrorMessage/>
         }
         const items=this.renderItems(posts);

@@ -1,13 +1,16 @@
 import React from 'react';
 import User from './User';
 import InstaService from '../services/instaservice';
+import Loader from "./Loader";
+import ErrorMessage from "./ErrorMessage";
 
 
 export default class Users extends React.Component{
     InstaService=new InstaService();
     state={
         users: [],
-        error: false
+        error: false,
+        loading: true
     }
 
     componentDidMount() {
@@ -15,7 +18,7 @@ export default class Users extends React.Component{
     }
 
     updateUsers(){
-        this.InstaService.getAllPosts()
+        this.InstaService.getAllUsersPhoto()
             .then(this.onUsersLoaded)
             .catch(this.onError)
     }
@@ -23,13 +26,15 @@ export default class Users extends React.Component{
     onUsersLoaded=(users)=>{
         this.setState({
             users,
-            error: false
+            error: false,
+            loading: false
         })
     }
 
     onError=()=>{
         this.setState({
-            error: true
+            error: true,
+            loading: false
         })
     }
 
@@ -49,9 +54,12 @@ export default class Users extends React.Component{
 
 
     render() {
-        const {users, error}=this.state;
-        if (error){
-            console.error('User not loaded');
+        const {users, error, loading}=this.state;
+        if (!error && loading){
+            return <Loader min/>
+        }
+        else if (error) {
+            return <ErrorMessage/>
         }
         const items=this.renderItems(users);
         return (
